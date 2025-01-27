@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yolo-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: yolo-container
+      image: ultralytics/ultralytics:latest
+      command: ["yolo"]
+      args: [
+        "predict",
+        "model=yolo11n.pt",
+        "source=/home/mounts/input/sipping_coffee.jpg", #path in the filesystem of the container
+        "project=/home/mounts/output"
+      ]
+      volumeMounts:
+        - mountPath: "/home/mounts" #path in the filesystem of the container
+          name: data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: yolo-pvc
