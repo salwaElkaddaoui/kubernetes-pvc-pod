@@ -39,3 +39,20 @@ Once the Pod is created, you should notice the creation of a subfolder in output
 
 ![ConsoleSnapshot](assets/pod_logs.png "logs")
 
+### Behaviour with a deployment
+
+The advantage of using a deployment is the automatic management of the pods.
+We'll delete the pod (optional step):
+```bash
+kubectl delete pod yolo-pod
+```
+Then, create a deployment with of 2 pods:
+```bash
+kubectl create -f deployment.yaml
+```
+Now we have 2 identical pods created by the deployment:
+![ConsoleSnapshot](assets/pods.png "pods")
+
+
+### The restartPolicy of the pods
+In the pod YAML definition file, we set the pod's restart policy to **Never** for debugging purposes. This way, in case of an issue with the pod, we can log into it (using kubectl exec -it <podname> -- /bin/bash) to investigate. For deployments, the restart policy of the pods can only be **Always**, which means that once a pod finishes, it restarts and runs the inference again. This explains the multiple subfolders predict/ that you'll see in the output/ folder.
